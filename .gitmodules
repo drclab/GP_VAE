@@ -1,0 +1,3 @@
+[submodule "Jax"]
+	path = Jax
+	url = https://github.com/drclab/JAX.git
