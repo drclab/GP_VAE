@@ -1,3 +1,6 @@
 [submodule "Jax"]
 	path = Jax
 	url = https://github.com/drclab/JAX.git
+[submodule "Oxford"]
+	path = Oxford
+	url = https://github.com/MLGlobalHealth/pi-vae.git
