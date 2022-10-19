@@ -56,6 +56,7 @@ class GP1D(Dataset):
 
 if __name__ == '__main__':
     dataset =GP1D(dataPoints=300, samples=10000, ls=0.1, x_lim=3)
+    print(len(dataset))
     dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
     fig = plt.figure()
     ax = fig.add_subplot(111)
