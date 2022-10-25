@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from utils import plotimp
-from gen_data.gp1d import GP1D
+from GP1D_gen import GP1D
 import matplotlib.pyplot as plt 
 import numpy as np
 from tqdm import tqdm, trange
