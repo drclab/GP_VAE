@@ -2,19 +2,19 @@ import argparse
 import logging
 import sys
 
-import torch
-import torch.nn as nn
-from torch.distributions import constraints
+# import torch
+# import torch.nn as nn
+# from torch.distributions import constraints
 
 import pyro
 import pyro.contrib.examples.polyphonic_data_loader as poly
-import pyro.distributions as dist
+#import pyro.distributions as dist
 from pyro import poutine
 from pyro.infer import SVI, JitTraceEnum_ELBO, TraceEnum_ELBO, TraceTMC_ELBO
 from pyro.infer.autoguide import AutoDelta
 from pyro.ops.indexing import Vindex
 from pyro.optim import Adam
-from pyro.util import ignore_jit_warnings
+#from pyro.util import ignore_jit_warnings
 
 logging.basicConfig(format="%(relativeCreated) 9d %(message)s", level=logging.DEBUG)
 
@@ -26,56 +26,15 @@ debug_handler.setLevel(logging.DEBUG)
 debug_handler.addFilter(filter=lambda record: record.levelno <= logging.DEBUG)
 log.addHandler(debug_handler)
 
-# Next let's add a dependency of y[t] on y[t-1].
-#
-#     x[t-1] --> x[t] --> x[t+1]
-#        |        |         |
-#        V        V         V
-#     y[t-1] --> y[t] --> y[t+1]
-#
-# Note that this is the "arHMM" model in reference [1].
-
-def model_2(sequences, lengths, args, batch_size=None, include_prior=True):
-    with ignore_jit_warnings():
-        num_sequences, max_length, data_dim = map(int, sequences.shape)
-        assert lengths.shape == (num_sequences,)
-        assert lengths.max() <= max_length
-    with poutine.mask(mask=include_prior):
-        probs_x = pyro.sample(
-            "probs_x",
-            dist.Dirichlet(0.9 * torch.eye(args.hidden_dim) + 0.1).to_event(1),
-        )
-        probs_y = pyro.sample(
-            "probs_y",
-            dist.Beta(0.1, 0.9).expand([args.hidden_dim, 2, data_dim]).to_event(3),
-        )
-    tones_plate = pyro.plate("tones", data_dim, dim=-1)
-    with pyro.plate("sequences", num_sequences, batch_size, dim=-2) as batch:
-        lengths = lengths[batch]
-        x, y = 0, 0
-        for t in pyro.markov(range(max_length if args.jit else lengths.max())):
-            with poutine.mask(mask=(t < lengths).unsqueeze(-1)):
-                x = pyro.sample(
-                    "x_{}".format(t),
-                    dist.Categorical(probs_x[x]),
-                    infer={"enumerate": "parallel"},
-                )
-                # Note the broadcasting tricks here: to index probs_y on tensors x and y,
-                # we also need a final tensor for the tones dimension. This is conveniently
-                # provided by the plate associated with that dimension.
-                with tones_plate as tones:
-                    y = pyro.sample(
-                        "y_{}".format(t),
-                        dist.Bernoulli(probs_y[x, y, tones]),
-                        obs=sequences[batch, t],
-                    ).long()
-
+#-------------------------------
+from HMMs import model_0, model_1, model_2
 
 models = {
     name[len("model_") :]: model
     for name, model in globals().items()
     if name.startswith("model_")
 }
+#-------------------------------
 
 def main(args):
     if args.cuda:
@@ -118,8 +77,8 @@ def main(args):
     # distribution, value, and log_prob tensor. Note this information is
     # automatically printed on most errors inside SVI.
     if args.print_shapes:
-        #first_available_dim = -2 if model is model_0 else -3
-        first_available_dim = -3 if model is model_2 else -2
+        first_available_dim = -2 if model is model_0 else -3
+        #first_available_dim = -3 if model is model_2 else -2
         guide_trace = poutine.trace(guide).get_trace(
             sequences, lengths, args=args, batch_size=args.batch_size
         )
@@ -134,7 +93,7 @@ def main(args):
     if args.tmc:
         if args.jit:
             raise NotImplementedError("jit support not yet added for TraceTMC_ELBO")
-        elbo = TraceTMC_ELBO(max_plate_nesting=2 if model is model_2 else 2)
+        elbo = TraceTMC_ELBO(max_plate_nesting=1 if model is model_0 else 2)
         tmc_model = poutine.infer_config(
             model,
             lambda msg: {"num_samples": args.tmc_num_samples, "expand": False}
@@ -145,7 +104,7 @@ def main(args):
     else:
         Elbo = JitTraceEnum_ELBO if args.jit else TraceEnum_ELBO
         elbo = Elbo(
-            max_plate_nesting=2 if model is model_2 else 1,
+            max_plate_nesting=1 if model is model_0 else 2,
             #strict_enumeration_warning=(model is not model_7),
             jit_options={"time_compilation": args.time_compilation},
         )
