@@ -4,3 +4,6 @@
 [submodule "Oxford"]
 	path = Oxford
 	url = https://github.com/MLGlobalHealth/pi-vae.git
+[submodule "MuE"]
+	path = MuE
+	url = https://github.com/debbiemarkslab/MuE
