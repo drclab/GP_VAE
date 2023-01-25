@@ -7,3 +7,6 @@
 [submodule "MuE"]
 	path = MuE
 	url = https://github.com/debbiemarkslab/MuE
+[submodule "pyro"]
+	path = pyro
+	url = https://github.com/pyro-ppl/pyro
