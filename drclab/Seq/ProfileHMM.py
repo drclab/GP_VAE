@@ -233,7 +233,7 @@ if __name__ == "__main__":
         default="amino-acid",
         help="Alphabet (amino-acid OR dna OR ATGC ...).",
     )
-    parser.add_argument("-b", "--batch-size", default=10, type=int, help="Batch size.")
+    parser.add_argument("-b", "--batch-size", default=5, type=int, help="Batch size.")
     parser.add_argument(
         "-M",
         "--latent-seq-length",
@@ -262,7 +262,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-lr",
         "--learning-rate",
-        default=0.001,
+        default=0.005,
         type=float,
         help="Learning rate for Adam optimizer.",
     )
@@ -279,7 +279,7 @@ if __name__ == "__main__":
         help="Gamma parameter for multistage learning rate.",
     )
     parser.add_argument(
-        "-e", "--n-epochs", default=10, type=int, help="Number of epochs of training."
+        "-e", "--n-epochs", default=5, type=int, help="Number of epochs of training."
     )
     parser.add_argument(
         "--no-plots", default=False, action="store_true", help="Make plots."
