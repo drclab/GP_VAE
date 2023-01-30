@@ -55,7 +55,7 @@ def generate_data(small_test, include_stop, device):
     if small_test:
         mult_dat = 1
     else:
-        mult_dat = 10
+        mult_dat = 2
 
     seqs = ["BABBA"] * mult_dat + ["BAAB"] * mult_dat + ["BABBB"] * mult_dat
     dataset = BiosequenceDataset(
@@ -116,7 +116,7 @@ def main(args):
         pin_memory=args.pin_mem,
     )
     #============================================
-    print(dataset.alphabet)
+    #print(dataset.alphabet)
     #============================================
     # Infer with SVI.
     scheduler = MultiStepLR(
@@ -128,9 +128,10 @@ def main(args):
         }
     )
     n_epochs = args.n_epochs
-    losses = model.fit_svi(dataset, n_epochs, args.batch_size, scheduler, args.jit)
+    losses = model.fit_svi(dataset, 2, 1, scheduler, args.jit)
 
     # Evaluate.
+    print("\n<------------ Evaluate ------------->\n")
     train_lp, test_lp, train_perplex, test_perplex = model.evaluate(
         dataset_train, dataset_test, args.jit
     )

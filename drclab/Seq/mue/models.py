@@ -68,6 +68,8 @@ class ProfileHMM(nn.Module):
         self.insert_seq_shape = (latent_seq_length + 1, alphabet_length)
         self.indel_shape = (latent_seq_length, 3, 2)
 
+        print(self.precursor_seq_shape, self.insert_seq_shape, self.indel_shape)
+
         assert isinstance(prior_scale, float)
         self.prior_scale = prior_scale
         assert isinstance(indel_prior_bias, float)
@@ -79,6 +81,7 @@ class ProfileHMM(nn.Module):
     def model(self, seq_data, local_scale):
 
         # Latent sequence.
+        print('Model ===>')
         precursor_seq = pyro.sample(
             "precursor_seq",
             dist.Normal(
@@ -86,6 +89,10 @@ class ProfileHMM(nn.Module):
                 self.prior_scale * torch.ones(self.precursor_seq_shape),
             ).to_event(2),
         )
+
+        #print(precursor_seq)
+
+
         precursor_seq_logits = precursor_seq - precursor_seq.logsumexp(-1, True)
         insert_seq = pyro.sample(
             "insert_seq",
@@ -132,6 +139,7 @@ class ProfileHMM(nn.Module):
 
     def guide(self, seq_data, local_scale):
         # Sequence.
+        print('guide ==>')
         precursor_seq_q_mn = pyro.param(
             "precursor_seq_q_mn", torch.zeros(self.precursor_seq_shape)
         )
@@ -174,7 +182,7 @@ class ProfileHMM(nn.Module):
     def fit_svi(
         self,
         dataset,
-        epochs=2,
+        epochs=1,
         batch_size=1,
         scheduler=None,
         jit=False,
@@ -229,16 +237,19 @@ class ProfileHMM(nn.Module):
         losses = []
         t0 = datetime.datetime.now()
         for epoch in range(epochs):
+            print(len(dataload))
             for seq_data, L_data in dataload:
                 if self.is_cuda:
                     seq_data = seq_data.cuda()
+                else:
+                    seq_data = seq_data.cpu()
                 #print(seq_data.shape)
                 loss = svi.step(
                     seq_data, torch.tensor(len(dataset) / seq_data.shape[0])
                 )
                 losses.append(loss)
                 scheduler.step()
-            print(epoch, loss, " ", datetime.datetime.now() - t0)
+            print(epoch, '{:.2f}'.format(loss), "\t", datetime.datetime.now() - t0)
         return losses
 
     def evaluate(self, dataset_train, dataset_test=None, jit=False):
@@ -284,6 +295,10 @@ class ProfileHMM(nn.Module):
         lp, perplex = 0.0, 0.0
         with torch.no_grad():
             for seq_data, L_data in dataload:
+                #print('============= Perplex =============')
+                #print(seq_data)
+                #print(L_data)
+
                 if self.is_cuda:
                     seq_data, L_data = seq_data.cuda(), L_data.cuda()
                 conditioned_model = poutine.condition(
