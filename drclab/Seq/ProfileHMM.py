@@ -43,8 +43,10 @@ import torch
 from torch.optim import Adam
 
 import pyro
-from pyro.contrib.mue.dataloaders import BiosequenceDataset
-from pyro.contrib.mue.models import ProfileHMM
+#from pyro.contrib
+from .mue.dataloaders import BiosequenceDataset
+#from pyro.contrib
+from .mue.models import ProfileHMM
 from pyro.optim import MultiStepLR
 
 

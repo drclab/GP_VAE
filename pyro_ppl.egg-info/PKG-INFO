@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: pyro-ppl
+Version: 1.8.4+9a858da7
+Summary: A Python library for probabilistic modeling and inference
+Home-page: http://pyro.ai
+Author: Uber AI Labs
+License: Apache 2.0
+Project-URL: Documentation, https://docs.pyro.ai
+Project-URL: Source, https://github.com/pyro-ppl/pyro
+Keywords: machine learning statistics probabilistic programming bayesian modeling pytorch
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: extras
+Provides-Extra: test
+Provides-Extra: profile
+Provides-Extra: dev
+Provides-Extra: horovod
+Provides-Extra: funsor
