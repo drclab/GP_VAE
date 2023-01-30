@@ -115,7 +115,9 @@ def main(args):
         cuda=args.cuda,
         pin_memory=args.pin_mem,
     )
-
+    #============================================
+    print(dataset.alphabet)
+    #============================================
     # Infer with SVI.
     scheduler = MultiStepLR(
         {
@@ -136,77 +138,77 @@ def main(args):
     print("test logp: {} perplex: {}".format(test_lp, test_perplex))
 
     # Plots.
-    time_stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    if not args.no_plots:
-        plt.figure(figsize=(6, 6))
-        plt.plot(losses)
-        plt.xlabel("step")
-        plt.ylabel("loss")
-        if not args.no_save:
-            plt.savefig(
-                os.path.join(
-                    args.out_folder, "ProfileHMM_plot.loss_{}.pdf".format(time_stamp)
-                )
-            )
+    # time_stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    # if not args.no_plots:
+    #     plt.figure(figsize=(6, 6))
+    #     plt.plot(losses)
+    #     plt.xlabel("step")
+    #     plt.ylabel("loss")
+    #     if not args.no_save:
+    #         plt.savefig(
+    #             os.path.join(
+    #                 args.out_folder, "ProfileHMM_plot.loss_{}.pdf".format(time_stamp)
+    #             )
+    #         )
 
-        plt.figure(figsize=(6, 6))
-        insert = pyro.param("insert_q_mn").detach()
-        insert_expect = torch.exp(insert - insert.logsumexp(-1, True))
-        plt.plot(insert_expect[:, :, 1].cpu().numpy())
-        plt.xlabel("position")
-        plt.ylabel("probability of insert")
-        plt.legend([r"$r_0$", r"$r_1$", r"$r_2$"])
-        if not args.no_save:
-            plt.savefig(
-                os.path.join(
-                    args.out_folder,
-                    "ProfileHMM_plot.insert_prob_{}.pdf".format(time_stamp),
-                )
-            )
-        plt.figure(figsize=(6, 6))
-        delete = pyro.param("delete_q_mn").detach()
-        delete_expect = torch.exp(delete - delete.logsumexp(-1, True))
-        plt.plot(delete_expect[:, :, 1].cpu().numpy())
-        plt.xlabel("position")
-        plt.ylabel("probability of delete")
-        plt.legend([r"$u_0$", r"$u_1$", r"$u_2$"])
-        if not args.no_save:
-            plt.savefig(
-                os.path.join(
-                    args.out_folder,
-                    "ProfileHMM_plot.delete_prob_{}.pdf".format(time_stamp),
-                )
-            )
+    #     plt.figure(figsize=(6, 6))
+    #     insert = pyro.param("insert_q_mn").detach()
+    #     insert_expect = torch.exp(insert - insert.logsumexp(-1, True))
+    #     plt.plot(insert_expect[:, :, 1].cpu().numpy())
+    #     plt.xlabel("position")
+    #     plt.ylabel("probability of insert")
+    #     plt.legend([r"$r_0$", r"$r_1$", r"$r_2$"])
+    #     if not args.no_save:
+    #         plt.savefig(
+    #             os.path.join(
+    #                 args.out_folder,
+    #                 "ProfileHMM_plot.insert_prob_{}.pdf".format(time_stamp),
+    #             )
+    #         )
+    #     plt.figure(figsize=(6, 6))
+    #     delete = pyro.param("delete_q_mn").detach()
+    #     delete_expect = torch.exp(delete - delete.logsumexp(-1, True))
+    #     plt.plot(delete_expect[:, :, 1].cpu().numpy())
+    #     plt.xlabel("position")
+    #     plt.ylabel("probability of delete")
+    #     plt.legend([r"$u_0$", r"$u_1$", r"$u_2$"])
+    #     if not args.no_save:
+    #         plt.savefig(
+    #             os.path.join(
+    #                 args.out_folder,
+    #                 "ProfileHMM_plot.delete_prob_{}.pdf".format(time_stamp),
+    #             )
+    #         )
 
-    if not args.no_save:
-        pyro.get_param_store().save(
-            os.path.join(
-                args.out_folder, "ProfileHMM_results.params_{}.out".format(time_stamp)
-            )
-        )
-        with open(
-            os.path.join(
-                args.out_folder,
-                "ProfileHMM_results.evaluation_{}.txt".format(time_stamp),
-            ),
-            "w",
-        ) as ow:
-            ow.write("train_lp,test_lp,train_perplex,test_perplex\n")
-            ow.write(
-                "{},{},{},{}\n".format(train_lp, test_lp, train_perplex, test_perplex)
-            )
-        with open(
-            os.path.join(
-                args.out_folder, "ProfileHMM_results.input_{}.txt".format(time_stamp)
-            ),
-            "w",
-        ) as ow:
-            ow.write("[args]\n")
-            args.latent_seq_length = model.latent_seq_length
-            for elem in list(args.__dict__.keys()):
-                ow.write("{} = {}\n".format(elem, args.__getattribute__(elem)))
-            ow.write("alphabet_str = {}\n".format("".join(dataset.alphabet)))
-            ow.write("max_length = {}\n".format(dataset.max_length))
+    # if not args.no_save:
+    #     pyro.get_param_store().save(
+    #         os.path.join(
+    #             args.out_folder, "ProfileHMM_results.params_{}.out".format(time_stamp)
+    #         )
+    #     )
+    #     with open(
+    #         os.path.join(
+    #             args.out_folder,
+    #             "ProfileHMM_results.evaluation_{}.txt".format(time_stamp),
+    #         ),
+    #         "w",
+    #     ) as ow:
+    #         ow.write("train_lp,test_lp,train_perplex,test_perplex\n")
+    #         ow.write(
+    #             "{},{},{},{}\n".format(train_lp, test_lp, train_perplex, test_perplex)
+    #         )
+    #     with open(
+    #         os.path.join(
+    #             args.out_folder, "ProfileHMM_results.input_{}.txt".format(time_stamp)
+    #         ),
+    #         "w",
+    #     ) as ow:
+    #         ow.write("[args]\n")
+    #         args.latent_seq_length = model.latent_seq_length
+    #         for elem in list(args.__dict__.keys()):
+    #             ow.write("{} = {}\n".format(elem, args.__getattribute__(elem)))
+    #         ow.write("alphabet_str = {}\n".format("".join(dataset.alphabet)))
+    #         ow.write("max_length = {}\n".format(dataset.max_length))
 
 
 if __name__ == "__main__":
