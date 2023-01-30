@@ -139,7 +139,7 @@ class ProfileHMM(nn.Module):
 
     def guide(self, seq_data, local_scale):
         # Sequence.
-        print('guide ==>')
+        #print('guide ==>')
         precursor_seq_q_mn = pyro.param(
             "precursor_seq_q_mn", torch.zeros(self.precursor_seq_shape)
         )
@@ -247,6 +247,7 @@ class ProfileHMM(nn.Module):
                 loss = svi.step(
                     seq_data, torch.tensor(len(dataset) / seq_data.shape[0])
                 )
+                print(loss)
                 losses.append(loss)
                 scheduler.step()
             print(epoch, '{:.2f}'.format(loss), "\t", datetime.datetime.now() - t0)
