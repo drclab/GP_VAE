@@ -128,7 +128,7 @@ def main(args):
         }
     )
     n_epochs = args.n_epochs
-    losses = model.fit_svi(dataset, 5, 50, scheduler, args.jit)
+    losses = model.fit_svi(dataset, 2, 10, scheduler, args.jit)
 
     # Evaluate.
     print("\n<------------ Evaluate ------------->\n")

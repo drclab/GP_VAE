@@ -81,7 +81,7 @@ class ProfileHMM(nn.Module):
     def model(self, seq_data, local_scale):
 
         # Latent sequence.
-        print('Model ===>')
+        #print('Model ===>')
         precursor_seq = pyro.sample(
             "precursor_seq",
             dist.Normal(
@@ -237,7 +237,7 @@ class ProfileHMM(nn.Module):
         losses = []
         t0 = datetime.datetime.now()
         for epoch in range(epochs):
-            print(len(dataload))
+            #print(len(dataload))
             for seq_data, L_data in dataload:
                 if self.is_cuda:
                     seq_data = seq_data.cuda()
