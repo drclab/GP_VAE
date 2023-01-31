@@ -81,7 +81,7 @@ class ProfileHMM(nn.Module):
     def model(self, seq_data, local_scale):
 
         # Latent sequence.
-        #print('Model ===>')
+        print('Model ===>')
         precursor_seq = pyro.sample(
             "precursor_seq",
             dist.Normal(
@@ -90,10 +90,13 @@ class ProfileHMM(nn.Module):
             ).to_event(2),
         )
 
-        #print(precursor_seq)
+        print(precursor_seq)
 
 
         precursor_seq_logits = precursor_seq - precursor_seq.logsumexp(-1, True)
+
+        # print(precursor_seq_logits)
+
         insert_seq = pyro.sample(
             "insert_seq",
             dist.Normal(
@@ -125,6 +128,10 @@ class ProfileHMM(nn.Module):
         initial_logits, transition_logits, observation_logits = self.statearrange(
             precursor_seq_logits, insert_seq_logits, insert_logits, delete_logits
         )
+        
+        print(initial_logits)
+        print(transition_logits)
+        print(observation_logits)
 
         with pyro.plate("batch", seq_data.shape[0]):
             with poutine.scale(scale=local_scale):
@@ -237,7 +244,7 @@ class ProfileHMM(nn.Module):
         losses = []
         t0 = datetime.datetime.now()
         for epoch in range(epochs):
-            #print(len(dataload))
+            print(len(dataload))
             for seq_data, L_data in dataload:
                 if self.is_cuda:
                     seq_data = seq_data.cuda()

@@ -55,6 +55,15 @@ class Profile(nn.Module):
         self.register_buffer("u_transf_0", torch.zeros((M, 3, 2, K)))
         self.register_buffer("null_transf_0", torch.zeros((K,)))
         m, g = -1, 0
+        #----------------------------------
+        # print(self.K)
+        # print('rrrrrrrrrrrrrrr')
+        # print(self.r_transf_0)
+        # print('uuuuuuuuuuuuuuuuu')
+        # print(self.u_transf_0)
+        # print('null')
+        # print(self.null_transf_0)
+        #------------------------------------
         for gp in range(2):
             for mp in range(M + gp):
                 kp = mg2k(mp, gp, M)
@@ -86,6 +95,13 @@ class Profile(nn.Module):
 
                 else:
                     self.null_transf_0[kp] = 1
+        
+        # print('rrrrrrrrrrrrrrr')
+        # print(self.r_transf_0)
+        # print('uuuuuuuuuuuuuuuuu')
+        # print(self.u_transf_0)
+        # print('null')
+        # print(self.null_transf_0)
 
         self.register_buffer("r_transf", torch.zeros((M, 3, 2, K, K)))
         self.register_buffer("u_transf", torch.zeros((M, 3, 2, K, K)))
