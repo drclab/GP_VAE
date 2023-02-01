@@ -55,7 +55,7 @@ def generate_data(small_test, include_stop, device):
     if small_test:
         mult_dat = 1
     else:
-        mult_dat = 2
+        mult_dat = 1
 
     seqs = ["BABBA"] * mult_dat + ["BAAB"] * mult_dat + ["BABBB"] * mult_dat
     dataset = BiosequenceDataset(
@@ -128,7 +128,7 @@ def main(args):
         }
     )
     n_epochs = args.n_epochs
-    losses = model.fit_svi(dataset, 5, 50, scheduler, args.jit)
+    losses = model.fit_svi(dataset, 2, 10, scheduler, args.jit)
 
     # Evaluate.
     print("\n<------------ Evaluate ------------->\n")
