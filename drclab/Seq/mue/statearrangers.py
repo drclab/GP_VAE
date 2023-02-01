@@ -186,11 +186,16 @@ class Profile(nn.Module):
             initialize the MissingDataDiscreteHMM distribution.
         :rtype: ~torch.Tensor, ~torch.Tensor, ~torch.Tensor
         """
+  
+
         initial_logits = (
             torch.einsum("...ijk,ijkl->...l", delete_logits, self.u_transf_0)
             + torch.einsum("...ijk,ijkl->...l", insert_logits, self.r_transf_0)
             + (-1 / self.epsilon) * self.null_transf_0
         )
+        print('delete logits\n{}'.format(torch.einsum("...ijk,ijkl->...l", delete_logits, self.u_transf_0)))
+        #print('initial logits\n{}'.format(initial_logits))
+
         transition_logits = (
             torch.einsum("...ijk,ijklf->...lf", delete_logits, self.u_transf)
             + torch.einsum("...ijk,ijklf->...lf", insert_logits, self.r_transf)

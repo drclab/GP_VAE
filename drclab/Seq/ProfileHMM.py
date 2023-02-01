@@ -131,12 +131,12 @@ def main(args):
     losses = model.fit_svi(dataset, 2, 10, scheduler, args.jit)
 
     # Evaluate.
-    print("\n<------------ Evaluate ------------->\n")
-    train_lp, test_lp, train_perplex, test_perplex = model.evaluate(
-        dataset_train, dataset_test, args.jit
-    )
-    print("train logp: {} perplex: {}".format(train_lp, train_perplex))
-    print("test logp: {} perplex: {}".format(test_lp, test_perplex))
+    # print("\n<------------ Evaluate ------------->\n")
+    # train_lp, test_lp, train_perplex, test_perplex = model.evaluate(
+    #     dataset_train, dataset_test, args.jit
+    # )
+    # print("train logp: {} perplex: {}".format(train_lp, train_perplex))
+    # print("test logp: {} perplex: {}".format(test_lp, test_perplex))
 
     # Plots.
     # time_stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
