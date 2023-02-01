@@ -10,6 +10,4 @@
 [submodule "pyro"]
 	path = pyro
 	url = https://github.com/pyro-ppl/pyro
-[submodule "prediction-powered-inference"]
-	path = prediction-powered-inference
-	url = https://github.com/aangelopoulos/prediction-powered-inference
+
