@@ -90,7 +90,7 @@ class ProfileHMM(nn.Module):
             ).to_event(2),
         )
 
-        print(precursor_seq)
+        #print(precursor_seq)
 
 
         precursor_seq_logits = precursor_seq - precursor_seq.logsumexp(-1, True)
@@ -129,9 +129,9 @@ class ProfileHMM(nn.Module):
             precursor_seq_logits, insert_seq_logits, insert_logits, delete_logits
         )
         
-        print(initial_logits)
-        print(transition_logits)
-        print(observation_logits)
+        # print(initial_logits)
+        # print(transition_logits)
+        # print(observation_logits)
 
         with pyro.plate("batch", seq_data.shape[0]):
             with poutine.scale(scale=local_scale):
