@@ -193,8 +193,8 @@ class Profile(nn.Module):
             + torch.einsum("...ijk,ijkl->...l", insert_logits, self.r_transf_0)
             + (-1 / self.epsilon) * self.null_transf_0
         )
-        print('delete logits\n{}'.format(torch.einsum("...ijk,ijkl->...l", delete_logits, self.u_transf_0)))
-        #print('initial logits\n{}'.format(initial_logits))
+        #print('insert_seq_logits\n{}'.format(insert_seq_logits))
+        #print('precursor_seq_logits\n{}'.format(precursor_seq_logits))
 
         transition_logits = (
             torch.einsum("...ijk,ijklf->...lf", delete_logits, self.u_transf)

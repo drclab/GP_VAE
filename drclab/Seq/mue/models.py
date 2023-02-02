@@ -95,7 +95,7 @@ class ProfileHMM(nn.Module):
 
         precursor_seq_logits = precursor_seq - precursor_seq.logsumexp(-1, True)
 
-        # print(precursor_seq_logits)
+        #print(precursor_seq_logits)
 
         insert_seq = pyro.sample(
             "insert_seq",
@@ -104,6 +104,8 @@ class ProfileHMM(nn.Module):
                 self.prior_scale * torch.ones(self.insert_seq_shape),
             ).to_event(2),
         )
+
+        #print(insert_seq)
         insert_seq_logits = insert_seq - insert_seq.logsumexp(-1, True)
 
         # Indel probabilities.
@@ -114,6 +116,9 @@ class ProfileHMM(nn.Module):
                 self.prior_scale * torch.ones(self.indel_shape),
             ).to_event(3),
         )
+
+        #print(insert)
+
         insert_logits = insert - insert.logsumexp(-1, True)
         delete = pyro.sample(
             "delete",
@@ -122,6 +127,8 @@ class ProfileHMM(nn.Module):
                 self.prior_scale * torch.ones(self.indel_shape),
             ).to_event(3),
         )
+
+        #print('delete', delete)
         delete_logits = delete - delete.logsumexp(-1, True)
 
         # Construct HMM parameters.
@@ -134,6 +141,7 @@ class ProfileHMM(nn.Module):
         # print(observation_logits)
 
         with pyro.plate("batch", seq_data.shape[0]):
+            #print(seq_data)
             with poutine.scale(scale=local_scale):
                 # Observations.
                 pyro.sample(
