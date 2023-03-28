@@ -96,12 +96,12 @@ class Profile(nn.Module):
                 else:
                     self.null_transf_0[kp] = 1
         
-        # print('rrrrrrrrrrrrrrr')
-        # print(self.r_transf_0)
-        # print('uuuuuuuuuuuuuuuuu')
-        # print(self.u_transf_0)
-        # print('null')
-        # print(self.null_transf_0)
+        print('rrrrrrrrrrrrrrr')
+        print(self.r_transf_0)
+        print('uuuuuuuuuuuuuuuuu')
+        print(self.u_transf_0)
+        print('null')
+        print(self.null_transf_0)
 
         self.register_buffer("r_transf", torch.zeros((M, 3, 2, K, K)))
         self.register_buffer("u_transf", torch.zeros((M, 3, 2, K, K)))
