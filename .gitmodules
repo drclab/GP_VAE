@@ -14,3 +14,6 @@
 [submodule "prediction-powered-inference"]
 	path = prediction-powered-inference
 	url = https://github.com/aangelopoulos/prediction-powered-inference
+[submodule "chatgpt_academic"]
+	path = chatgpt_academic
+	url = https://github.com/binary-husky/chatgpt_academic
