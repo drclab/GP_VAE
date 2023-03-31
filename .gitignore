@@ -2,3 +2,4 @@ examples/
 ./drclab/Seq/__pycache__/
 *.pyc
 .DS_STORE
+*.log
