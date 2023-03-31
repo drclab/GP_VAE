@@ -17,3 +17,6 @@
 [submodule "chatgpt_academic"]
 	path = chatgpt_academic
 	url = https://github.com/binary-husky/chatgpt_academic
+[submodule "gradio"]
+	path = gradio
+	url = https://github.com/gradio-app/gradio
