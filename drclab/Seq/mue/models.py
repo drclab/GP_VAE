@@ -136,9 +136,9 @@ class ProfileHMM(nn.Module):
             precursor_seq_logits, insert_seq_logits, insert_logits, delete_logits
         )
         
-        # print(initial_logits)
-        # print(transition_logits)
-        # print(observation_logits)
+        print(initial_logits.shape)
+        print(transition_logits.shape)
+        print(observation_logits.shape)
 
         with pyro.plate("batch", seq_data.shape[0]):
             #print(seq_data)
