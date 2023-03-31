@@ -3,3 +3,4 @@ examples/
 *.pyc
 .DS_STORE
 *.log
+log.csv
