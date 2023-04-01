@@ -17,6 +17,9 @@ openai.api_key = api_key
 
 default_prompt = 'How to use ChatGPT?'
 
+def get_API_key():
+       return api_key
+
 def answer(prompt):
 
         response = openai.Completion.create(
