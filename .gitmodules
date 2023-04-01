@@ -20,3 +20,6 @@
 [submodule "gradio"]
 	path = gradio
 	url = https://github.com/gradio-app/gradio
+[submodule "ChatDulun"]
+	path = ChatDulun
+	url = https://huggingface.co/spaces/drclab/ChatDulun
