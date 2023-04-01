@@ -4,3 +4,4 @@ examples/
 .DS_STORE
 *.log
 log.csv
+*.env
