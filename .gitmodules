@@ -23,3 +23,6 @@
 [submodule "ChatDulun"]
 	path = ChatDulun
 	url = https://huggingface.co/spaces/drclab/ChatDulun
+[submodule "dulun_store"]
+	path = dulun_store
+	url = https://huggingface.co/spaces/drclab/dulun_store
