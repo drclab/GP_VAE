@@ -26,3 +26,6 @@
 [submodule "dulun_store"]
 	path = dulun_store
 	url = https://huggingface.co/spaces/drclab/dulun_store
+[submodule "asr"]
+	path = asr
+	url = https://huggingface.co/spaces/drclab/asr
